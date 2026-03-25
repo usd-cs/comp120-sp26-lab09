@@ -1,0 +1,10 @@
+{
+    "github.copilot.enable": {
+        "*": false
+    },
+    "python.analysis.pythonVersion": "3.13",
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportInvalidTypeForm": "none"
+    }
+}
