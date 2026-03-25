@@ -4,35 +4,36 @@ Module: linked_list
 Implementation of a linked list.
 """
 
-from typing import Any, Optional
+from __future__ import annotations
 from random import randrange, shuffle, seed
 
-class Node:
+
+class Node[T]:
     """ Class representing a single entry in a linked list.
 
-    >>> n = Node(7, None)
+    >>> n: Node[int] = Node(7, None)
     >>> n.data
     7
-    >>> n.next
-    None
-    >>> m = Node(13, n)
+    >>> n.next is None
+    True
+    >>> m: Node[int] = Node(13, n)
     >>> m.data
     13
     >>> m.next.data
     7
     """
-    data: Any
-    next: Optional['Node']
+    data: T
+    next: Node[T] | None
 
-    def __init__(self, data: Any, next: Optional['Node']) -> None:
+    def __init__(self, data: T, next: Node[T] | None) -> None:
         self.data = data
         self.next = next
 
-class LinkedList:
+class LinkedList[T]:
     """
     Class representing a linked list, which implements the UnorderedList ADT.
 
-    >>> l = LinkedList()
+    >>> l: LinkedList[int] = LinkedList()
     >>> print(l)
     []
     >>> l.add(5)
@@ -45,13 +46,13 @@ class LinkedList:
     True
     >>> l.search(7)
     False
-    >>> l2 = LinkedList()
+    >>> l2: LinkedList[int] = LinkedList()
     >>> l2.add(5)
     >>> l == l2
     False
     """
 
-    head: Optional[Node]
+    head: Node[T] | None
 
     def __init__(self) -> None:
         self.head = None
@@ -64,18 +65,22 @@ class LinkedList:
         s = '['
 
         while current is not None:
-            s += (str(current.data) + ', ')
+            s += str(current.data)
+
+            # only add a comma if there is another node
+            if current.next is not None:
+                s += ', '
+
             current = current.next
 
-        # strip off the extraneous ', ' at the end
-        s = s[:-2] + ']'
+        s += ']'
         return s
 
 
     def is_empty(self) -> bool:
         return self.head == None
 
-    def add(self, data: Any) -> None:
+    def add(self, data: T) -> None:
         """ Adds new node containing data to front of list. """
         new_node = Node(data, self.head)
         self.head = new_node
@@ -91,7 +96,7 @@ class LinkedList:
 
         return count
 
-    def search(self, value: Any) -> bool:
+    def search(self, value: T) -> bool:
         """ Returns True if <value> is located anywhere in this list. """
         current = self.head
 
@@ -102,8 +107,11 @@ class LinkedList:
 
         return False
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: object) -> bool:
         """ Returns True if <other> has the same contents as this list. """
+
+        if not isinstance(other, LinkedList):
+            return False
 
         current_self = self.head
         current_other = other.head
@@ -117,7 +125,7 @@ class LinkedList:
         return current_self == current_other
 
 
-def create_random_linked_list(size: int, seed_val: int = 42) -> LinkedList:
+def create_random_linked_list(size: int, seed_val: int = 42) -> LinkedList[int]:
     """ Creates a linked list containing <size> random integers between
     -100000 and +100000.
 
@@ -143,7 +151,7 @@ def create_random_linked_list(size: int, seed_val: int = 42) -> LinkedList:
         nodes[i].next = nodes[i+1]
 
     # create the linked list, setting the head to our first node
-    new_list = LinkedList()
+    new_list: LinkedList[int] = LinkedList()
     new_list.head = nodes[0]
 
     return new_list
