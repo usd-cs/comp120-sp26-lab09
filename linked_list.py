@@ -58,6 +58,8 @@ class LinkedList[T]:
         self.head = None
 
     def __str__(self) -> str:
+        """ Converts this linked list to a string formatted similarly to the built-in
+        Python list class (e.g. "[1, 2, 3]"). """
         if self.is_empty(): # empty list
             return '[]'
 
@@ -78,6 +80,7 @@ class LinkedList[T]:
 
 
     def is_empty(self) -> bool:
+        """ Returns True if this list is empty and False otherwise."""
         return self.head == None
 
     def add(self, data: T) -> None:
@@ -108,7 +111,7 @@ class LinkedList[T]:
         return False
 
     def __eq__(self, other: object) -> bool:
-        """ Returns True if <other> has the same contents as this list. """
+        """ Returns True if <other> is a linked ist with the same contents as this list. """
 
         if not isinstance(other, LinkedList):
             return False
