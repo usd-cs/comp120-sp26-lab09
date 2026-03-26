@@ -1,5 +1,5 @@
 """
-COMP120 Lab 07 Starter Code
+COMP120 Lab 09 Starter Code
 
 Author: Sat Garcia (sat@sandiego.edu)
 """
