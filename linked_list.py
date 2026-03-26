@@ -7,6 +7,8 @@ Implementation of a linked list.
 from __future__ import annotations
 from random import randrange, shuffle, seed
 
+class ListEmptyError(Exception):
+    pass
 
 class Node[T]:
     """ Class representing a single entry in a linked list.
@@ -109,6 +111,65 @@ class LinkedList[T]:
             current = current.next
 
         return False
+    
+    def get_item(self, index: int) -> T:
+        """ Gets the item at the specified index.
+
+        Examples:
+            >>> l = LinkedList()
+            >>> l.add(9)
+            >>> l.add(5)
+            >>> l.get_item(0)
+            5
+            >>> l.get_item(1)
+            9
+        """
+        if index < 0:
+            raise IndexError("Index cannot be negative")
+        
+        current = self.head
+        i = 0
+
+        while (i < index) and (current is not None):
+            i += 1
+            current = current.next
+
+        if current is None:
+            raise IndexError("Index out of range")
+        else:
+            return current.data
+    
+    def pop(self) -> T:
+        """ Removes/returns the list's last item.
+        
+        Examples:
+            >>> l = LinkedList()
+            >>> l.add(9)
+            >>> l.add(5)
+            >>> l.pop()
+            9
+            >>> l.pop()
+            5
+        """
+        if self.head is None:
+            raise ListEmptyError()   
+        
+        current = self.head
+        previous = None
+
+        while current.next is not None:
+            previous = current
+            current = current.next
+
+        if previous is None:
+            # this runs when there was only one item in the list
+            self.head = None
+        else:
+            # this is when there were 2+ items in the list
+            previous.next = None
+
+        return current.data
+
 
     def __eq__(self, other: object) -> bool:
         """ Returns True if <other> is a linked ist with the same contents as this list. """
